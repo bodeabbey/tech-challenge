@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ob-devopsday-service
+spec:
+  selector:
+    app: ob-devopsday
+  ports:
+  - protocol: "TCP"
+    port: 5000
+    targetPort: 5000
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ob-devopsday
+spec:
+  selector:
+    matchLabels:
+      app: ob-devopsday
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ob-devopsday
+    spec:
+      containers:
+      - name: ob-devopsday
+        image: bodeabbey/flask:obmovies_latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
